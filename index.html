@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARAM-HEX 海克斯大乱斗玩家风格测试</title>
+  <style>
+    :root {
+      --bg: #0a0e1a;
+      --panel: #121826;
+      --text: #e0e6ed;
+      --muted: #6b7280;
+      --line: #1f2937;
+      --soft: #1a2332;
+      --silver: #b0b0b0;
+      --gold: #ffd700;
+      --prismatic: linear-gradient(135deg, #9d4edd, #ffd700);
+      --accent: #8b5cf6;
+      --accent-strong: #7c3aed;
+      --shadow: 0 16px 40px rgba(139, 92, 246, 0.15);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(ellipse at top, rgba(139, 92, 246, 0.15), transparent 50%),
+        radial-gradient(ellipse at bottom, rgba(157, 78, 221, 0.1), transparent 50%),
+        linear-gradient(180deg, #0a0e1a, #0f1623);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .shell {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 24px 16px 56px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--silver), var(--gold), #9d4edd, var(--gold), var(--silver));
+      background-size: 200% 100%;
+      animation: shimmer 3s linear infinite;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .hero {
+      padding: 28px;
+      margin-top: 20px;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -80px;
+      top: -80px;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(157, 78, 221, 0.15), transparent 70%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--silver), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 800;
+      margin: 0 0 12px;
+      background: linear-gradient(135deg, var(--gold), #9d4edd, var(--silver));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p.subtitle {
+      font-size: 16px;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 32px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #0a0e1a;
+      background: linear-gradient(135deg, var(--gold), #9d4edd);
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255, 215, 0, 0.3);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: var(--soft);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .btn-secondary:hover {
+      background: var(--line);
+      box-shadow: none;
+    }
+
+    .intro-content {
+      padding: 0 28px 28px;
+    }
+
+    .intro-content p {
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .author-box {
+      margin-top: 24px;
+      padding: 16px;
+      background: var(--soft);
+      border-radius: 14px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* 测试页面 */
+    .test-container {
+      display: none;
+      padding: 28px;
+    }
+
+    .progress-bar {
+      margin-bottom: 24px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .progress-track {
+      height: 8px;
+      background: var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--silver), var(--gold), #9d4edd);
+      border-radius: 10px;
+      transition: width 0.3s ease;
+    }
+
+    .question-card {
+      margin-bottom: 32px;
+    }
+
+    .question-text {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      padding: 16px 20px;
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: rgba(26, 35, 50, 0.5);
+    }
+
+    .option-item:hover {
+      border-color: var(--accent);
+      background: var(--soft);
+    }
+
+    .option-item.selected {
+      border-color: var(--gold);
+      background: rgba(255, 215, 0, 0.1);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+    }
+
+    .option-radio {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--muted);
+      border-radius: 50%;
+      margin-right: 14px;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .option-item.selected .option-radio {
+      border-color: var(--gold);
+    }
+
+    .option-item.selected .option-radio::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 10px;
+      background: linear-gradient(135deg, var(--gold), #9d4edd);
+      border-radius: 50%;
+    }
+
+    .option-text {
+      font-size: 16px;
+      color: var(--text);
+    }
+
+    .test-footer {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .test-footer .btn {
+      flex: 1;
+    }
+
+    /* 结果页面 */
+    .result-container {
+      display: none;
+      padding: 28px;
+    }
+
+    .result-hero {
+      text-align: center;
+      padding: 32px 0;
+    }
+
+    .result-emoji {
+      font-size: 80px;
+      margin-bottom: 16px;
+      filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5));
+    }
+
+    .result-title {
+      font-size: 14px;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--silver), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .result-type {
+      font-size: 42px;
+      font-weight: 800;
+      margin: 8px 0;
+      background: linear-gradient(135deg, var(--gold), #9d4edd, var(--silver));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .result-type-en {
+      font-size: 20px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .result-match {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(157, 78, 221, 0.15));
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      background: var(--soft);
+      margin-top: 16px;
+    }
+
+    .result-section {
+      margin-top: 32px;
+      padding-top: 28px;
+      border-top: 1px solid var(--line);
+    }
+
+    .result-section h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0 0 16px;
+      color: var(--text);
+    }
+
+    .result-desc {
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    .dimensions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .dimension-item {
+      padding: 12px;
+      background: var(--soft);
+      border-radius: 10px;
+      text-align: center;
+      border: 1px solid var(--line);
+    }
+
+    .dimension-name {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .dimension-value {
+      font-size: 16px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--silver), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .tip-box {
+      margin-top: 24px;
+      padding: 16px;
+      background: rgba(255, 215, 0, 0.1);
+      border-left: 4px solid var(--gold);
+      border-radius: 8px;
+    }
+
+    .tip-box h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gold);
+      margin: 0 0 8px;
+    }
+
+    .tip-box p {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .author-words {
+      margin-top: 24px;
+      padding: 20px;
+      background: var(--soft);
+      border-radius: 14px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    .result-footer {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .result-footer .btn {
+      flex: 1;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .visible {
+      display: block !important;
+    }
+
+    /* 六边形装饰 */
+    .hex-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill='%239d4edd'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/svg%3E");
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <div class="hex-bg"></div>
+  <div class="shell">
+    <!-- 首页 -->
+    <div id="intro" class="card hero">
+      <div class="eyebrow">🔮 ARAM-HEX</div>
+      <h1>海克斯大乱斗玩家风格测试</h1>
+      <p class="subtitle">MBTI已经过时，海克斯大乱斗来了。</p>
+
+      <div class="intro-content">
+        <p>这是一个基于<strong>15个游戏维度</strong>的娱乐测试，将把你分类为<strong>27种玩家类型</strong>之一。</p>
+        <p>你是心钢怪？丢丢怪？还是每局必问"选哪个海克斯"的问问怪？</p>
+        <p>测试仅需<strong>2分钟</strong>，完成后你的大乱斗风格将无处遁形。</p>
+      </div>
+
+      <button class="btn" onclick="startTest()">开始测试</button>
+    </div>
+
+    <!-- 测试页 -->
+    <div id="test" class="card test-container">
+      <div class="progress-bar">
+        <div class="progress-label">
+          <span>测试进度</span>
+          <span id="progress-text">0 / 30</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div id="questions-container"></div>
+
+      <div class="test-footer">
+        <button class="btn btn-secondary" onclick="goToIntro()">返回首页</button>
+        <button class="btn" id="submit-btn" onclick="submitTest()" disabled>提交并查看结果</button>
+      </div>
+    </div>
+
+    <!-- 结果页 -->
+    <div id="result" class="card result-container">
+      <div class="result-hero">
+        <div class="result-emoji" id="result-emoji">💜</div>
+        <div class="result-title">你的玩家类型</div>
+        <div class="result-type" id="result-type">心钢怪</div>
+        <div class="result-type-en" id="result-type-en">Heartsteel Fan</div>
+        <div class="result-match" id="result-match">匹配度 92%</div>
+      </div>
+
+      <div class="result-section">
+        <h3>📊 该类型的简单解读</h3>
+        <div class="result-desc" id="result-desc">
+          描述内容...
+        </div>
+      </div>
+
+      <div class="result-section">
+        <h3>📈 十五维度评分</h3>
+        <div class="dimensions-grid" id="dimensions-grid"></div>
+      </div>
+
+      <div class="tip-box">
+        <h4>💡 友情提示</h4>
+        <p>本测试仅供娱乐，不构成游戏建议。测试结果不代表你的真实水平，请勿上头。</p>
+      </div>
+
+      <div class="author-words">
+        <strong>作者的话：</strong><br>
+        本测试参考 SBTI-FIRE 项目改编，主题替换为海克斯大乱斗玩家风格。初衷是用搞怪的方式让大家思考自己的游戏习惯和出装思路。<br><br>
+        由于作者也是大乱斗老玩家，所以平等的吐槽了各类玩家，在此抱歉！如有冒犯非常抱歉！<br><br>
+        总之以娱乐为主，还请不要用于盈利呀。<br><br>
+        项目地址：<a href="https://github.com/nbh847/SBTI-LOL-hex" target="_blank">https://github.com/nbh847/SBTI-LOL-hex</a>
+      </div>
+
+      <div class="result-footer">
+        <button class="btn btn-secondary" onclick="goToIntro()">回到首页</button>
+        <button class="btn" onclick="restartTest()">重新测试</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============ 数据定义 ============
+
+    // 15个游戏维度定义
+    const DIMENSIONS = [
+      // 海克斯选择模型 (H)
+      { code: 'H1', name: '海克斯决策速度' },
+      { code: 'H2', name: '海克斯信息来源' },
+      { code: 'H3', name: '英雄池深度' },
+      // 心态管理模型 (U)
+      { code: 'U1', name: '队友容忍度' },
+      { code: 'U2', name: '局势应对' },
+      { code: 'U3', name: '优势劣势处理' },
+      // 地图适应模型 (M)
+      { code: 'M1', name: '三图熟悉度' },
+      { code: 'M2', name: '地图策略差异' },
+      { code: 'M3', name: '地图偏爱' },
+      // 出装风格模型 (B)
+      { code: 'B1', name: '装备类型偏好' },
+      { code: 'B2', name: '出装灵活性' },
+      { code: 'B3', name: '传统与创新' },
+      // 位置偏好模型 (P)
+      { code: 'P1', name: '进场时机选择' },
+      { code: 'P2', name: '输出距离偏好' },
+      { code: 'P3', name: '前排后排定位' }
+    ];
+
+    // 30道题目 (每维度2题)
+    const QUESTIONS = [
+      // H1: 海克斯决策速度
+      { dimension: 'H1', question: "3级海克斯强化出现时，你通常？", options: ["秒选一个", "看几秒再选", "纠结很久才选", "问队友选哪个"] },
+      // H2: 海克斯信息来源
+      { dimension: 'H2', question: "选择海克斯强化时，你的决策依据是？", options: ["随便点一个", "听名字选", "问队友", "自己研究"] },
+      // H3: 海克斯策略思考
+      { dimension: 'H3', question: "你的英雄池有多深？", options: ["只玩几个", "十几个", "大部分都会", "全能选手"] },
+      // U1: 强化效果认知
+      { dimension: 'U1', question: "队友乱选阵容，你会？", options: ["无所谓", "心里吐槽", "嘴上说说", "直接开喷"] },
+      // U2: 强化协同意识
+      { dimension: 'U2', question: "劣势局你会怎么做？", options: ["继续冲", "猥琐发育", "等对面失误", "直接摆烂"] },
+      // U3: 英雄匹配理解
+      { dimension: 'U3', question: "优势局你会怎么做？", options: ["稳健结束", "浪一波", "越塔杀人", "虐泉"] },
+      // M1: 三图熟悉度
+      { dimension: 'M1', question: "海克斯大乱斗的三张地图，你？", options: ["只知道嚎哭深渊", "知道屠夫之桥", "都了解一点", "三图精通"] },
+      // M2: 地图策略差异
+      { dimension: 'M2', question: "玩刺客英雄（如劫、阿卡丽），你会？", options: ["侧面切入", "正面刚", "蹲草阴人", "等残血收割"] },
+      // M3: 地图偏爱
+      { dimension: 'M3', question: "玩射手英雄（如女警、金克斯），你更偏向？", options: ["纯输出堆伤害", "吸蓝刀减CD", "半肉保命", "无尽暴击流"] },
+      // B1: 装备类型偏好
+      { dimension: 'B1', question: "玩法师英雄（如拉克丝、泽拉斯），你更偏向？", options: ["纯法强爆发", "消耗流面具", "肉装折磨", "看局势出装"] },
+      // B2: 出装灵活性
+      { dimension: 'B2', question: "你的出装会随局势调整吗？", options: ["固定出装", "偶尔调整", "经常调整", "每局都变"] },
+      // B3: 传统与创新
+      { dimension: 'B3', question: "你会尝试非主流出装吗？", options: ["只出推荐装", "偶尔尝试", "经常创新", "出装鬼才"] },
+      // P1: 进场时机选择
+      { dimension: 'P1', question: "团战开始时，你在哪？", options: ["第一个冲进去", "跟着队友上", "等技能交完", "最后面QQQ"] },
+      // P2: 输出距离偏好
+      { dimension: 'P2', question: "你更喜欢哪种输出方式？", options: ["贴脸平A", "中距离技能", "后面丢技能", "蹲草阴人"] },
+      // P3: 前排后排定位
+      { dimension: 'P3', question: "你觉得自己在大乱斗里的打法风格是？", options: ["开局就莽", "稳中求胜", "打一半怂了", "从头怂到尾"] },
+
+      // 第二轮
+      { dimension: 'H1', question: "面对三个海克斯强化，你的选择习惯是？", options: ["立刻选第一个", "简单对比后选", "纠结很久才选", "随便选一个"] },
+      { dimension: 'H2', question: "队友问你选哪个海克斯，你会？", options: ["我也是问人的", "随便推荐一个", "认真分析", "发攻略链接"] },
+      { dimension: 'H3', question: "随机英雄会不会让你想重随？", options: ["从不", "偶尔", "经常想", "必重随"] },
+      { dimension: 'U1', question: "你觉得队友0-5开局时，你会？", options: ["无所谓", "心里吐槽", "嘴上说说", "直接开喷"] },
+      { dimension: 'U2', question: "你觉得队友抢你位置时，你会？", options: ["无所谓", "换英雄", "嘴上说说", "直接开喷"] },
+      { dimension: 'U3', question: "你觉得队友抢你人头时，你会？", options: ["无所谓", "略不爽", "嘴上说说", "挂机摆烂"] },
+      { dimension: 'M1', question: "玩辅助英雄（如索拉卡、琴女），你会优先出？", options: ["纯辅助装", "香娃戒眼石", "半肉法师装", "AP输出装"] },
+      { dimension: 'M2', question: "看到对面阵容很克制你，你会？", options: ["无所谓照打", "心里发慌", "猥琐发育", "等对面失误"] },
+      { dimension: 'M3', question: "你更擅长哪种类型的英雄？", options: ["坦克战士", "法师射手", "刺客突进", "辅助保护"] },
+      { dimension: 'B1', question: "玩坦克英雄（如赛恩、瑟提），第一件通常出？", options: ["心之钢叠血", "狂徒回血", "传统防御装", "看对面阵容"] },
+      { dimension: 'B2', question: "对面全是法师，你会？", options: ["不管照常出", "出一件魔抗", "全堆魔抗", "根据英雄调整"] },
+      { dimension: 'B3', question: "你看过大乱斗出装攻略吗？", options: ["没看过", "看过一点", "经常看", "有自己的理解"] },
+      { dimension: 'P1', question: "对面C位走位失误，你第一反应是？", options: ["闪现秒他", "等队友先上", "安全距离Q一下", "假装没看见"] },
+      { dimension: 'P2', question: "你血量30%时团战开了，你会？", options: ["必须进场", "有治疗就进", "边缘OB", "回家守家"] },
+      { dimension: 'P3', question: "连死两次后，你的打法会变怂吗？", options: ["继续莽", "略谨慎", "明显变怂", "完全不敢上了"] }
+    ];
+
+    // 27种玩家类型
+    const PERSONALITY_TYPES = [
+      {
+        code: 'HEARTSTEEL', name: '钢门永存', nameEn: 'Heartsteel Cult', emoji: '💜',
+        desc: '心之钢就是神！万物皆可心钢，法师射手坦克战士，没有心钢就没有灵魂。你的出装永远是第一件心钢，体型变大才是正义。队友吐槽？那是不懂心钢的美好。叠满心钢后，你就是团战最靓的那个大胖子。',
+        vector: [1,1,1,2,1,1,2,2,2,3,2,1,2,2,3]
+      },
+      {
+        code: 'POKE', name: 'QQQ机器人', nameEn: 'QQQ Bot', emoji: '🎯',
+        desc: '团战是什么？我只知道站在后面QQQ。进场是不可能进场的，这辈子都不可能进场的。你的定位永远是地图最右边，技能丢完就往后跑，等CD好了再出来丢两个。虽然被骂怂，但你的伤害统计永远是全队最高。怂一时，爽一局。',
+        vector: [2,2,2,2,2,2,2,2,2,1,2,2,1,3,1]
+      },
+      {
+        code: 'PRISMATIC', name: '棱彩狂魔', nameEn: 'Prismatic Maniac', emoji: '💎',
+        desc: '只有棱彩强化才能配得上你！银色？那是垃圾。金色？勉强能用。15级的棱彩强化是你等待整局的理由，为了那一个棱彩，你可以忍受前面所有银色的折磨。你的眼中只有最闪耀的那个。',
+        vector: [1,2,1,3,3,3,2,2,2,2,2,2,2,2,2]
+      },
+      {
+        code: 'GOLDONLY', name: '金色强迫症', nameEn: 'Gold OCD', emoji: '🏆',
+        desc: '银色强化就是看不起我！必须金色起步，棱彩才是目标。每次看到银色强化你都想重开，但现实往往是银色居多。你学会了妥协，但心中永远燃烧着对金色的渴望。',
+        vector: [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+      },
+      {
+        code: 'SILVER', name: '银色战将', nameEn: 'Silver Warrior', emoji: '🥈',
+        desc: '银色强化够用了，实用主义至上。你不在乎花里胡哨的棱彩效果，能用的就是好强化。务实是你的优点，但也可能错失一些强力组合。毕竟有时候，棱彩才是改变游戏体验的关键。',
+        vector: [3,3,3,2,2,2,2,2,2,2,2,2,2,2,2]
+      },
+      {
+        code: 'CONFUSED', name: '选哪个哥', nameEn: 'Which One Guy', emoji: '🤯',
+        desc: '三个海克斯强化看半天，纠结很久才随便点一个。每个看起来都很有用，又好像都不太好用。你的犹豫不决让队友等到不耐烦，但你心中有一万个理由纠结。选择困难症晚期患者无疑。',
+        vector: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+      },
+      {
+        code: 'ASKER', name: '人体复读机', nameEn: 'Human Parrot', emoji: '❓',
+        desc: '"我选哪个海克斯？"这是你每局必问的问题。队友的推荐是你的圣经，攻略是你的圣经2.0。离开别人的建议，你仿佛失去了选择能力。但你也是聪明的，懂得利用集体智慧。只是偶尔队友也会不耐烦...',
+        vector: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+      },
+      {
+        code: 'RANDOM', name: '闭眼玩家', nameEn: 'Eyes Closed', emoji: '👆',
+        desc: '海克斯强化？看都不看，点到哪个是哪个。你相信命运的选择，或者纯粹懒得研究。强化好坏全看天意，你的心态倒是很好，毕竟随便选的，输了也不怪自己。',
+        vector: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+      },
+      {
+        code: 'SPEED', name: '不读技能', nameEn: 'No Reading', emoji: '⚡',
+        desc: '海克斯强化出现瞬间你就选完了，管它是什么。速度是你的信仰，效率是你的追求。虽然可能选到垃圾强化，但你赢在了时间。队友还在研究，你已经准备好下一波团战了。',
+        vector: [3,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+      },
+      {
+        code: 'GOOGLE', name: '暂停查攻略', nameEn: 'Pause Google', emoji: '🔍',
+        desc: '每次选海克斯强化都要暂停去查攻略。哪个强哪个弱，你必须搞清楚。游戏变成了学习时间，队友等得不耐烦，但你心中了然：知识就是力量。只是有时候，查着查着游戏就输了。',
+        vector: [1,3,3,3,3,3,2,2,2,2,2,2,2,2,2]
+      },
+      {
+        code: 'COPYCAT', name: '抄作业达人', nameEn: 'Homework Copier', emoji: '📋',
+        desc: '攻略出什么你就出什么，主播选什么你就选什么。你相信前人的智慧，不踩坑就是胜利。虽然少了一些探索乐趣，但你的胜率往往不低。毕竟站在巨人的肩膀上，总能看得更远。',
+        vector: [2,3,2,2,2,2,2,2,2,2,1,1,2,2,2]
+      },
+      {
+        code: 'TANKMAGE', name: '恶心流法师', nameEn: 'Nasty Mage', emoji: '🛡️🧙',
+        desc: '法师出肉，折磨队友，快乐自己。拉克丝出狂徒，泽拉斯堆血量，对面打不动你，你还能慢慢磨死对面。虽然队友看着头疼，但你乐在其中。肉法师的快乐，不懂的人永远不会懂。',
+        vector: [2,2,2,2,2,2,2,2,2,3,2,2,2,2,3]
+      },
+      {
+        code: 'ASSASSIN', name: '秒进现场', nameEn: 'Instant Death', emoji: '🗡️',
+        desc: '闪现进场，当场暴毙。你是刺客的狂热信徒，每次都要冲进场切C位。结果往往是：切到了，人也死了。进场5秒，灰屏30秒，但你永不言弃。只要切死一次对面C位，你这局就值了。队友：又送。',
+        vector: [2,2,2,2,2,2,2,2,2,1,2,2,1,1,1]
+      },
+      {
+        code: 'SNIPER', name: '活靶子射手', nameEn: 'Living Target', emoji: '🏹',
+        desc: '后面A人就完事了，走位是什么？你就是大乱斗的防御塔，站在最后面疯狂输出。一旦被切就只能等死，但只要队友保得好，你就是团战机器。简单粗暴，你的快乐就是A人。',
+        vector: [2,2,2,2,2,2,2,2,2,1,1,1,1,3,1]
+      },
+      {
+        code: 'BRUISER', name: '战士信仰', nameEn: 'Bruiser Believer', emoji: '⚔️',
+        desc: '半肉半输出，进场扛着揍。战士才是男人的浪漫，又肉又有输出才是王道。你可能是大乱斗最平衡的玩家，能抗能打，进退自如。虽然可能不够极端，但你永远不会成为突破口。',
+        vector: [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+      },
+      {
+        code: 'SUPPORT', name: '五保一工具人', nameEn: 'Nanny Bot', emoji: '💖',
+        desc: '救赎鸟盾五人保护，你是大乱斗的守护天使。没人玩辅助？我来！你的出装永远是团队装，你的心永远想着队友。虽然输出可能不高，但你的存在让整个团队更安心。辅助也是carry！',
+        vector: [2,2,2,2,2,2,2,2,2,2,2,2,3,2,3]
+      },
+      {
+        code: 'BUILD', name: '发明家', nameEn: 'Build Inventor', emoji: '⚙️',
+        desc: '主流出装？那不是你的风格。你总能想出奇奇怪怪的出装组合，心钢法师、攻速石头人、AP塞纳...虽然经常被吐槽，但偶尔成功一局就够吹一年。创新是你的标签，快乐是你的追求。',
+        vector: [2,2,2,2,2,2,2,2,2,2,1,3,2,2,2]
+      },
+      {
+        code: 'BUSH', name: '草丛原住民', nameEn: 'Bush Native', emoji: '🌿',
+        desc: '草丛才是你的家。你可以在一个草丛蹲到天荒地老，等人路过突然袭击。虽然队友可能以为你挂机了，但你心中自有妙计。出其不意攻其不备，蹲草的艺术不是人人能懂。',
+        vector: [2,2,2,2,2,2,2,2,2,2,2,2,3,1,1]
+      },
+      {
+        code: 'ENGAGE', name: '闪现白给', nameEn: 'Flash Feed', emoji: '🔥',
+        desc: '闪现开团，当场暴毙。你是大乱斗最勇敢的玩家，闪现就是你的召唤师技能。队友不敢上？我闪现上！对面走位失误？闪现开！你的开团可能创造奇迹，也可能直接白给。输了是时机不对，赢了是预判神级。',
+        vector: [3,2,2,2,2,2,2,2,2,2,2,2,1,1,3]
+      },
+      {
+        code: 'BACKLINE', name: '塔下战神', nameEn: 'Turtle Master', emoji: '⬅️',
+        desc: '永远在最后面，谁也别想碰到你。你的安全距离是以地图为单位计算的，对面刺客想切你得先跑半张图。虽然被骂怂，但你活着就是输出。活着，才有输出。',
+        vector: [2,2,2,2,2,2,2,2,2,1,2,2,1,3,1]
+      },
+      {
+        code: 'FRONTLINE', name: '肉盾担当', nameEn: 'Meat Shield', emoji: '🛡️',
+        desc: '我抗伤害你们输出，前排才是真男人。每次团战你第一个冲进去，吸收成吨的伤害让队友疯狂输出。你的KDA可能很难看，但你创造的价值无人可比。没有前排，哪来的后排？',
+        vector: [2,2,2,2,2,2,2,2,2,3,2,2,1,1,3]
+      },
+      {
+        code: 'FARM', name: '补兵狂魔', nameEn: 'Creep Obsessed', emoji: '🌾',
+        desc: '大乱斗也要认真补兵。兵线不进你不进场，炮车不收你不打团。你的补刀数永远是全场最高，虽然队友可能不理解，但你心中有自己的节奏。补刀的快乐，不是人人能懂。',
+        vector: [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+      },
+      {
+        code: 'YOLO', name: '快乐就完事', nameEn: 'YOLO King', emoji: '🌀',
+        desc: '怎么开心怎么来，输赢无所谓。快乐风男、亚索索、0-10还在笑，你的游戏理念就是一个字：爽！队友喷你你不在乎，你只在乎自己快乐。输了游戏，赢了快乐，这波不亏。',
+        vector: [1,1,1,1,1,1,1,1,1,1,1,3,1,1,1]
+      },
+      {
+        code: 'TRYHARD', name: '大乱斗职业哥', nameEn: 'ARAM Pro', emoji: '😤',
+        desc: '大乱斗也要认真打！虽然是娱乐模式，但你把每局都当成决赛。研究出装、分析强化、记召唤师技能，你的认真程度让人敬畏。赢了当然好，输了也不后悔，毕竟你已经尽力了。',
+        vector: [3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]
+      },
+      {
+        code: 'CARRY', name: '带哥尊严', nameEn: 'Big Bro Pride', emoji: '✨',
+        desc: '我带飞，躺好。你有carry全场的实力，也有carry全场的自信。选到本命英雄就是你的舞台，0-5开？不存在的。你的逆转能力让队友惊叹，虽然偶尔也会翻车，但你永远是那个想carry的男人。带哥从不回头看爆炸。',
+        vector: [2,2,2,2,2,2,2,2,2,1,2,2,2,2,1]
+      },
+      {
+        code: 'INT', name: '对面卧底', nameEn: 'Enemy Spy', emoji: '💰',
+        desc: '0-5开局，15投在心口。你就是对面的移动提款机，每次团战都是你的送头之旅。队友已经放弃希望，你还在坚持不懈地送。你是对面的第六人，是那个传说中的卧底。虽然很惨，但你至少让对面玩得很开心。',
+        vector: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+      },
+      {
+        code: 'SOLO', name: '独狼玩家', nameEn: 'Lone Wolf', emoji: '🐺',
+        desc: '队友是什么？我只信我自己。你从不配合团队，也不指望团队配合。你的打法永远是一打五，成功了是神仙，失败了是送头。你是大乱斗最孤独的玩家。',
+        vector: [2,1,1,1,1,1,1,1,1,2,2,2,2,2,1]
+      },
+      {
+        code: 'RAGE', name: '键盘侠', nameEn: 'Keyboard Warrior', emoji: '😡',
+        desc: '队友失误=键盘侠附体。你的脾气比你的操作更犀利，一言不合就开始喷。打字的时间比玩游戏的时间还长，队友经常怀疑你是不是来打字的。虽然可能技术不错，但心态永远是最大短板。游戏是为了快乐，别让愤怒毁了这一切。',
+        vector: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+      },
+      {
+        code: 'THROW', name: '浪比之王', nameEn: 'Throw King', emoji: '🌪️',
+        desc: '优势能输，劣势能追。你是大乱斗最戏剧性的玩家，再大的优势也能给你浪没。对面高地了？浪一波回来。远古龙有了？送一波给对面。队友永远不知道你这局会是什么版本，你自己也不知道。稳定的发挥？不存在的。就是爱浪，拦都拦不住。',
+        vector: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+      },
+      {
+        code: 'CHILL', name: '佛系摆烂', nameEn: 'Chill Slacker', emoji: '🍵',
+        desc: '输赢无所谓，开心就好。你永远不生气，不着急，不激动。队友喷你你无视，队友送头你理解，输了也能笑嘻嘻。你是大乱斗最平和的玩家，游戏对你来说就是放松和摆烂。这种心态让人羡慕，就是有时候队友会觉得你太佛了。',
+        vector: [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+      },
+      {
+        code: 'ONECHAMP', name: '本命痴汉', nameEn: 'Main Obsessed', emoji: '🌟',
+        desc: '只玩一个英雄，把一个英雄玩成痴汉。其他英雄都是浮云，只有本命才是真爱。你可能只玩拉克丝，或者只玩盖伦，随机不到本命就难受。你的本命永远是最强的，专精的力量不是人人能懂，就是有时候随机不到本命你会很痛苦。',
+        vector: [2,2,2,2,2,3,2,2,2,2,2,2,2,2,2]
+      },
+      {
+        code: 'PRACTICE', name: '练英雄仔', nameEn: 'Practicing Kid', emoji: '📖',
+        desc: '大乱斗就是用来练英雄的。匹配太累人机没意思，大乱斗正好。你可能在练新英雄也可能在练连招，输赢不重要重要的是学会。队友理解不了但你心中自有计划。就是练英雄的时候经常把队友练没了，0-10也在所不惜。',
+        vector: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+      },
+      {
+        code: 'START', name: '萌新上路', nameEn: 'Newbie Here', emoji: '🌱',
+        desc: '你刚开始玩海克斯大乱斗，一切都很新鲜。海克斯强化、地图轮换、出装变化，你在学习和摸索的过程中。继续保持，多玩几局你就会找到自己的风格！',
+        vector: [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+      }
+    ];
+
+    // ============ 状态管理 ============
+    let currentAnswers = {};
+    let shuffledQuestions = [];
+
+    // ============ 工具函数 ============
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function calculateMatch(userVector, typeVector) {
+      let distance = 0;
+      for (let i = 0; i < 15; i++) {
+        distance += Math.abs(userVector[i] - typeVector[i]);
+      }
+      const maxDistance = 15 * 2;
+      return Math.max(0, Math.round((1 - distance / maxDistance) * 100));
+    }
+
+    // ============ 界面切换 ============
+    function hideAll() {
+      document.getElementById('intro').classList.add('hidden');
+      document.getElementById('intro').classList.remove('visible');
+      document.getElementById('test').style.display = 'none';
+      document.getElementById('result').style.display = 'none';
+    }
+
+    function showIntro() {
+      hideAll();
+      document.getElementById('intro').classList.remove('hidden');
+      document.getElementById('intro').classList.add('visible');
+    }
+
+    function showTest() {
+      hideAll();
+      document.getElementById('test').style.display = 'block';
+    }
+
+    function showResult() {
+      hideAll();
+      document.getElementById('result').style.display = 'block';
+    }
+
+    function goToIntro() {
+      showIntro();
+    }
+
+    // ============ 测试逻辑 ============
+    function startTest() {
+      currentAnswers = {};
+      shuffledQuestions = shuffleArray(QUESTIONS);
+      renderQuestions();
+      updateProgress();
+      showTest();
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = '';
+
+      shuffledQuestions.forEach((q, index) => {
+        const questionCard = document.createElement('div');
+        questionCard.className = 'question-card';
+
+        const questionText = document.createElement('div');
+        questionText.className = 'question-text';
+        questionText.textContent = `${index + 1}. ${q.question}`;
+
+        const optionsList = document.createElement('div');
+        optionsList.className = 'options-list';
+
+        q.options.forEach((option, optIndex) => {
+          const optionItem = document.createElement('div');
+          optionItem.className = 'option-item';
+          optionItem.dataset.question = index;
+          optionItem.dataset.value = optIndex + 1;
+
+          const optionRadio = document.createElement('div');
+          optionRadio.className = 'option-radio';
+
+          const optionText = document.createElement('span');
+          optionText.className = 'option-text';
+          optionText.textContent = option;
+
+          optionItem.appendChild(optionRadio);
+          optionItem.appendChild(optionText);
+
+          optionItem.addEventListener('click', () => selectOption(index, optIndex + 1, optionItem));
+
+          optionsList.appendChild(optionItem);
+        });
+
+        questionCard.appendChild(questionText);
+        questionCard.appendChild(optionsList);
+        container.appendChild(questionCard);
+      });
+    }
+
+    function selectOption(questionIndex, value, element) {
+      currentAnswers[questionIndex] = value;
+
+      const allOptions = document.querySelectorAll(`.option-item[data-question="${questionIndex}"]`);
+      allOptions.forEach(opt => opt.classList.remove('selected'));
+      element.classList.add('selected');
+
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const answered = Object.keys(currentAnswers).length;
+      const total = shuffledQuestions.length;
+      const percentage = (answered / total) * 100;
+
+      document.getElementById('progress-text').textContent = `${answered} / ${total}`;
+      document.getElementById('progress-fill').style.width = `${percentage}%`;
+
+      const submitBtn = document.getElementById('submit-btn');
+      if (answered === total) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '提交并查看结果';
+      } else {
+        submitBtn.disabled = true;
+        submitBtn.textContent = `完成才能提交 (${total - answered}题剩余)`;
+      }
+    }
+
+    function submitTest() {
+      const userVector = calculateUserVector();
+      const bestMatch = findBestMatch(userVector);
+      displayResult(bestMatch, userVector);
+    }
+
+    function calculateUserVector() {
+      const dimensionScores = {};
+
+      DIMENSIONS.forEach(d => {
+        dimensionScores[d.code] = 0;
+      });
+
+      shuffledQuestions.forEach((q, index) => {
+        const answer = currentAnswers[index] || 2;
+        dimensionScores[q.dimension] += answer;
+      });
+
+      const vector = DIMENSIONS.map(d => {
+        const score = dimensionScores[d.code];
+        if (score <= 3) return 1;
+        if (score <= 5) return 2;
+        return 3;
+      });
+
+      return vector;
+    }
+
+    function findBestMatch(userVector) {
+      let bestType = null;
+      let bestScore = -1;
+
+      PERSONALITY_TYPES.forEach(type => {
+        const matchScore = calculateMatch(userVector, type.vector);
+        if (matchScore > bestScore) {
+          bestScore = matchScore;
+          bestType = { ...type, matchScore };
+        }
+      });
+
+      return bestType;
+    }
+
+    function displayResult(result, userVector) {
+      document.getElementById('result-emoji').textContent = result.emoji;
+      document.getElementById('result-type').textContent = result.name;
+      document.getElementById('result-type-en').textContent = result.nameEn;
+      document.getElementById('result-match').textContent = `匹配度 ${result.matchScore}%`;
+
+      document.getElementById('result-desc').textContent = result.desc;
+
+      const grid = document.getElementById('dimensions-grid');
+      grid.innerHTML = '';
+
+      DIMENSIONS.forEach((d, i) => {
+        const item = document.createElement('div');
+        item.className = 'dimension-item';
+
+        const value = userVector[i];
+        const valueText = value === 1 ? '低' : value === 2 ? '中' : '高';
+
+        item.innerHTML = `
+          <div class="dimension-name">${d.name}</div>
+          <div class="dimension-value">${valueText}</div>
+        `;
+
+        grid.appendChild(item);
+      });
+
+      showResult();
+    }
+
+    function restartTest() {
+      startTest();
+    }
+
+    // 初始化
+    showIntro();
+  </script>
+</body>
+</html>
