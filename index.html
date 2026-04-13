@@ -542,10 +542,10 @@
       { code: 'H1', name: '海克斯决策速度' },
       { code: 'H2', name: '海克斯信息来源' },
       { code: 'H3', name: '英雄池深度' },
-      // 心态管理模型 (U)
-      { code: 'U1', name: '队友容忍度' },
-      { code: 'U2', name: '局势应对' },
-      { code: 'U3', name: '优势劣势处理' },
+      // 摇人模型 (U)
+      { code: 'U1', name: '摇人态度' },
+      { code: 'U2', name: '人数要求' },
+      { code: 'U3', name: '等待耐心' },
       // 地图适应模型 (M)
       { code: 'M1', name: '三图熟悉度' },
       { code: 'M2', name: '地图策略差异' },
@@ -569,11 +569,11 @@
       // H3: 海克斯策略思考
       { dimension: 'H3', question: "你的英雄池有多深？", options: ["只玩几个", "十几个", "大部分都会", "全能选手"] },
       // U1: 强化效果认知
-      { dimension: 'U1', question: "队友乱选阵容，你会？", options: ["无所谓", "心里吐槽", "嘴上说说", "直接开喷"] },
+      { dimension: 'U1', question: "群里摇人打游戏，你通常是？", options: ["从不主动", "偶尔参与", "摇人积极分子", "组织者"] },
       // U2: 强化协同意识
-      { dimension: 'U2', question: "劣势局你会怎么做？", options: ["继续冲", "猥琐发育", "等对面失误", "直接摆烂"] },
+      { dimension: 'U2', question: "至少有几个人你才开？", options: ["有1个就行", "3个才开", "4个才开", "必须5黑"] },
       // U3: 英雄匹配理解
-      { dimension: 'U3', question: "优势局你会怎么做？", options: ["稳健结束", "浪一波", "越塔杀人", "虐泉"] },
+      { dimension: 'U3', question: "等人时你会？", options: ["无限等", "等10分钟", "等5分钟", "不等直接开"] },
       // M1: 三图熟悉度
       { dimension: 'M1', question: "海克斯大乱斗的三张地图，你？", options: ["只知道嚎哭深渊", "知道屠夫之桥", "都了解一点", "三图精通"] },
       // M2: 地图策略差异
@@ -597,9 +597,9 @@
       { dimension: 'H1', question: "面对三个海克斯强化，你的选择习惯是？", options: ["立刻选第一个", "简单对比后选", "纠结很久才选", "随便选一个"] },
       { dimension: 'H2', question: "队友问你选哪个海克斯，你会？", options: ["我也是问人的", "随便推荐一个", "认真分析", "发攻略链接"] },
       { dimension: 'H3', question: "随机英雄会不会让你想重随？", options: ["从不", "偶尔", "经常想", "必重随"] },
-      { dimension: 'U1', question: "你觉得队友0-5开局时，你会？", options: ["无所谓", "心里吐槽", "嘴上说说", "直接开喷"] },
-      { dimension: 'U2', question: "你觉得队友抢你位置时，你会？", options: ["无所谓", "换英雄", "嘴上说说", "直接开喷"] },
-      { dimension: 'U3', question: "你觉得队友抢你人头时，你会？", options: ["无所谓", "略不爽", "嘴上说说", "挂机摆烂"] },
+      { dimension: 'U1', question: "群里有人喊'来吗来吗'，你反应是？", options: ["秒回", "看情况", "问谁在", "装没看见"] },
+      { dimension: 'U2', question: "凑不齐5个人你会？", options: ["4个也开", "3个也行", "必须5人", "不开了"] },
+      { dimension: 'U3', question: "等人过程中你会？", options: ["耐心等", "催促快点", "边玩边等", "不耐烦"] },
       { dimension: 'M1', question: "玩辅助英雄（如索拉卡、琴女），你会优先出？", options: ["纯辅助装", "香娃戒眼石", "半肉法师装", "AP输出装"] },
       { dimension: 'M2', question: "看到对面阵容很克制你，你会？", options: ["无所谓照打", "心里发慌", "猥琐发育", "等对面失误"] },
       { dimension: 'M3', question: "你更擅长哪种类型的英雄？", options: ["坦克战士", "法师射手", "刺客突进", "辅助保护"] },
@@ -631,7 +631,7 @@
       {
         code: 'GOLDONLY', name: '金色强迫症', nameEn: 'Gold OCD', emoji: '🏆',
         desc: '银色强化就是看不起我！必须金色起步，棱彩才是目标。每次看到银色强化你都想重开，但现实往往是银色居多。你学会了妥协，但心中永远燃烧着对金色的渴望。',
-        vector: [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+        vector: [1,1,3,2,2,2,2,2,2,2,2,2,2,2,2]
       },
       {
         code: 'SILVER', name: '银色战将', nameEn: 'Silver Warrior', emoji: '🥈',
@@ -762,6 +762,36 @@
         code: 'CHILL', name: '佛系摆烂', nameEn: 'Chill Slacker', emoji: '🍵',
         desc: '输赢无所谓，开心就好。你永远不生气，不着急，不激动。队友喷你你无视，队友送头你理解，输了也能笑嘻嘻。你是大乱斗最平和的玩家，游戏对你来说就是放松和摆烂。这种心态让人羡慕，就是有时候队友会觉得你太佛了。',
         vector: [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+      },
+      {
+        code: 'WAIT4ONE', name: '四等一', nameEn: 'Waiting For One', emoji: '⏳',
+        desc: '四个人齐了，就等那一个。你们在群里等啊等，催啊催，那个人就是不回消息。经典等某某已成传统，没有他你们就是不开始。要么是等人等到半夜，要么是等不到只能四个人开。等一个人是你的宿命。',
+        vector: [2,2,2,2,2,2,2,2,2,2,2,2,1,1,1]
+      },
+      {
+        code: 'ORGANIZER', name: '摇人狂魔', nameEn: 'People Summoner', emoji: '📢',
+        desc: '群里喊你就有我！你是摇人积极分子，每次有人喊打游戏你都是第一个响应的。没有人来？我来摇！凑不齐人？我来拉！你是群里的活动组织者，没有你游戏局根本组不起来。辛苦了，摇人狂魔。',
+        vector: [3,3,2,2,2,2,2,2,2,2,2,2,3,3,3]
+      },
+      {
+        code: 'SECONDSBACK', name: '秒回哥', nameEn: 'Instant Reply', emoji: '⚡',
+        desc: '群里有人喊\"来吗\"，你秒回\"来\"！你是响应速度最快的人，从来不犹豫不墨迹。队友都还没反应过来，你已经准备好了。这种积极的态度让人敬佩，就是有时候秒回太快让人觉得你是不是没别的事做。',
+        vector: [3,3,2,2,2,2,2,2,2,2,2,2,3,2,2]
+      },
+      {
+        code: 'LEFTEOUT', name: '不带我是吧', nameEn: 'Left Behind', emoji: '😭',
+        desc: '五黑齐了我靠，不带我是吧？你总是那个被遗忘的人，每次打开群聊都是"游戏结束"或者"来晚了"。你知道自己被嫌弃，但还是很想一起玩。你就是那个永远在等下一局的可怜人。',
+        vector: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+      },
+      {
+        code: 'MUST5', name: '非五不打', nameEn: 'Must Five', emoji: '5️⃣',
+        desc: '五黑才是真理！少于五个人你根本不玩。四个人？不开。三个人？随便。两个人？你在开玩笑吗？你的原则就是要么五黑要么不玩，没有妥协余地。虽然这让你错失了很多游戏机会，但五黑的快乐你懂。',
+        vector: [2,2,2,2,2,2,2,2,2,2,2,2,1,1,1]
+      },
+      {
+        code: 'PRETEND', name: '装没看见', nameEn: 'Pretend Dead', emoji: '🙈',
+        desc: '群里摇人？我看到了，但我装没看见。你总是在线但"没看见"消息，等他们组好了你才出现"啊？刚才在忙"。你是选择性参与的高手，想玩的时候就回应，不想玩就装死。完美！',
+        vector: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
       },
       {
         code: 'ONECHAMP', name: '本命痴汉', nameEn: 'Main Obsessed', emoji: '🌟',
@@ -939,18 +969,23 @@
     }
 
     function findBestMatch(userVector) {
-      let bestType = null;
-      let bestScore = -1;
+      // 计算所有类型的分数
+      const scoredTypes = PERSONALITY_TYPES.map(type => ({
+        ...type,
+        matchScore: calculateMatch(userVector, type.vector)
+      }));
 
-      PERSONALITY_TYPES.forEach(type => {
-        const matchScore = calculateMatch(userVector, type.vector);
-        if (matchScore > bestScore) {
-          bestScore = matchScore;
-          bestType = { ...type, matchScore };
-        }
-      });
+      // 按分数排序
+      scoredTypes.sort((a, b) => b.matchScore - a.matchScore);
 
-      return bestType;
+      // 找出前5名的类型（分数相近的）
+      const topScore = scoredTypes[0].matchScore;
+      const threshold = topScore - 5; // 5分以内的都算相近
+      const candidates = scoredTypes.filter(t => t.matchScore >= threshold);
+
+      // 从候选中随机选择一个
+      const randomIndex = Math.floor(Math.random() * candidates.length);
+      return candidates[randomIndex];
     }
 
     function displayResult(result, userVector) {
