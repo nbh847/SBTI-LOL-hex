@@ -978,9 +978,9 @@
       // 按分数排序
       scoredTypes.sort((a, b) => b.matchScore - a.matchScore);
 
-      // 找出前5名的类型（分数相近的）
+      // 找出前几名的类型（分数相近的）
       const topScore = scoredTypes[0].matchScore;
-      const threshold = topScore - 5; // 5分以内的都算相近
+      const threshold = topScore - 2; // 2分以内的都算相近，提高匹配精确度
       const candidates = scoredTypes.filter(t => t.matchScore >= threshold);
 
       // 从候选中随机选择一个
